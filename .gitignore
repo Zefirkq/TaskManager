@@ -5,6 +5,8 @@ __pycache__/
 *.pyo
 *.egg-info/
 .eggs/
+test.py
+test.json
 
 # Distribution / packaging
 dist/

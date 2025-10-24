@@ -1,15 +1,26 @@
 import re
-import json
 from pathlib import Path
 from TaskClass import Task
-from json_manager import addfile
+from json_manager import addfile, load_from_json
+from sys import exit
 
-addfile() # create 'tasks.json' if not exists
+while True:
+    filename = input('print jsonfile name: ')
+    if not Path(filename).exists():
+        print('there is no such file')
+        create_decision = input('want to create new with that name?(1 - yes, 0 - no): ')
+        if create_decision == '1':
+            addfile(filename) # create 'tasks.json' if not exists
+            break
+        elif create_decision == '0':
+            loop_decision = input('exit?(1 - yes, 0 - no):')
+            if loop_decision == '1':
+                exit()           
+        else:
+            print('wrong input')
+    
 
-with open('tasks.json', 'r') as file:
-        dict = json.load(file)
-        if not len(dict["tasks"]) == 0:
-            Task.id = dict["tasks"][-1]['id'] + 1       
+load_from_json()       
 
 while True:
     user_input = input('print:')

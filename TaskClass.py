@@ -1,14 +1,14 @@
 from datetime import datetime
 import json
-from json_manager import add_to_json
+from json_manager import load_to_json, load_from_json
 
 class Task:
     task_list = []
     id = 1
-    def __init__(self, id, title, create_time='', update_time='-'):
+    def __init__(self, id, title, create_time='', update_time='-', status= 'to_do'):
         self.id = id
         self.description = title
-        self.status = 'to-do'
+        self.status = status
         self.createdAt = create_time
         self.updatedA = update_time
 
@@ -19,10 +19,7 @@ class Task:
         task = Task(id=id, title=description, create_time=create_time)
         Task.task_list.append(task)
         Task.id += 1
-        dict = {"id": task.id, "description": task.description,
-                            "status": task.status, "createdAt": task.createdAt,
-                              "updatedA": task.updatedA }
-        add_to_json(dict_task=dict)        
+        load_to_json()        
         
 
     def update_task(id, new_title):
@@ -30,24 +27,29 @@ class Task:
             if id == task.id:
                 task.description = new_title
                 task.updatedA = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        load_to_json()        
 
     def delete_task(id):
         for task in Task.task_list:
             if id == task.id:
                 Task.task_list.remove(task)
+        load_to_json()        
 
     def task_status(status, id):
         for task in Task.task_list:
             if id == task.id:
                 task.status = status
-    
-    '''def dict_for_json(id):
+        load_to_json()        
+
+    def list_to_json():
+        t_list = []
         for task in Task.task_list:
-            if id == task.id:
-                dict = {"id": task.id, "description": task.description,
-                            "status": task.status, "createdAt": task.create_time,
-                              "updatedA": task.update_time }
-        return dict'''      
+            dict = {"id": task.id, "description": task.description,
+                            "status": task.status, "createdAt": task.createdAt,
+                              "updatedA": task.updatedA }
+            t_list.append(dict)
+            return t_list
+      
             
     
     def all_tasks():
